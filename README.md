@@ -1,2 +1,2 @@
-# tmux
-my personal tmux config
+# Dotfils
+List of my personal dotfiles
