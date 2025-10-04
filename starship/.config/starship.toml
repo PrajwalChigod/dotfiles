@@ -1,0 +1,66 @@
+format = """
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_state\
+$git_status\
+$cmd_duration\
+$line_break\
+$os $character"""
+
+right_format = """
+$python
+$docker_context
+"""
+
+[os]
+format = "chigod($style)"
+style = "white"
+disabled = false
+
+
+[directory]
+truncation_length = 2
+truncation_symbol = " "
+style = "blue"
+
+[character]
+success_symbol = "[❯](purple)"
+error_symbol = "[❯](red)"
+vimcmd_symbol = "[❮](green)"
+
+[git_branch]
+format = "on [$symbol$branch]($style)"
+style = "red"
+symbol = " "
+
+[git_status]
+format = "[[( *$conflicted$untracked$modified$staged$renamed$deleted)](218)($ahead_behind$stashed)]($style)"
+style = "green"
+conflicted = "❌"
+untracked = "🌱"
+modified = "✔"
+staged = "+"
+renamed = "𝌡"
+deleted = "X"
+stashed = "≡"
+
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "bright-black"
+
+[cmd_duration]
+format = "[$duration]($style) "
+style = "yellow"
+
+[python]
+format = '[${symbol}${version}(\($virtualenv\))]($style)'
+symbol = " "
+style = "bright-green"
+
+[docker_context]
+format = ' [${symbol}${context}]($style)'
+symbol = '🐳'
+
+

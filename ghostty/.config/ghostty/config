@@ -1,0 +1,9 @@
+theme = Catppuccin Mocha
+font-family = "Monaspace Argon ExtraBold"
+font-size = 14
+background = "#000000"
+copy-on-select = true
+shell-integration = detect
+
+keybind = shift+enter=text:\n
+
