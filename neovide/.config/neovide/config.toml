@@ -1,0 +1,12 @@
+fork = true
+frame = "none"
+idle = true
+maximized = true
+vsync = true
+tabs = true
+
+[font]
+normal = [{ family = "FiraCode Nerd Font Mono", style = "SemBd" }]
+size = 14.0
+hinting = "slight"
+edging = "subpixelantialias"

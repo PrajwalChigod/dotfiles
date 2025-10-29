@@ -1,9 +1,9 @@
 theme = Catppuccin Mocha
-font-family = "Monaspace Argon ExtraBold"
+font-family = "FiraCode Nerd Font Mono SemBd"
 font-size = 14
 background = "#000000"
 copy-on-select = true
 shell-integration = detect
-
+macos-option-as-alt = true
 keybind = shift+enter=text:\n
 

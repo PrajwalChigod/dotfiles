@@ -30,7 +30,7 @@ function gwa
 
     # Set default base_branch if not provided
     if test -z "$base_branch"
-        set base_branch origin/main
+        set base_branch origin/master
     end
 
     # ensure .worktree exists
@@ -60,6 +60,7 @@ end
 # git worktree remove
 function gwr
     set branch $argv[1]
+    echo "Removing worktree branch '$branch'"
     set worktree_path ".worktree/$branch"
 
     if not test -d "$worktree_path"
@@ -69,6 +70,8 @@ function gwr
 
     git worktree remove "$worktree_path"
 end
+
+set -g fish_greeting "Welcome, $USER"
 
 if status is-interactive
     # Commands to run in interactive sessions can go here

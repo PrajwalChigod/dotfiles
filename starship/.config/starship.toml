@@ -13,6 +13,7 @@ right_format = """
 $python
 $docker_context
 """
+command_timeout = 500
 
 [os]
 format = "chigod($style)"
@@ -58,9 +59,10 @@ style = "yellow"
 format = '[${symbol}${version}(\($virtualenv\))]($style)'
 symbol = " "
 style = "bright-green"
+pyenv_version_name = false
+detect_extensions = ["py"]
+detect_files = ["requirements.txt", "pyproject.toml", ".python-version", "Pipfile", "setup.py"]
 
 [docker_context]
 format = ' [${symbol}${context}]($style)'
 symbol = '🐳'
-
-
