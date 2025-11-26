@@ -7,16 +7,6 @@ tabs = true
 refresh_rate = 60
 refresh_rate_idle = 5
 
-# Padding for better readability
-# padding_top = 10
-# padding_bottom = 10
-# padding_left = 10
-# padding_right = 10
-
-# Optional: Uncomment for subtle transparency
-# transparency = 0.95
-# blur = true
-
 # macOS specific
 macos_option_is_meta = "both"
 
@@ -32,11 +22,6 @@ animation_length = 0.06
 trail_size = 0.3
 animate_in_insert_mode = true
 animate_command_line = true
-# vfx_mode = "railgun"
-# vfx_opacity = 200.0
-# vfx_particle_lifetime = 1.2
-# vfx_particle_density = 7.0
-# vfx_particle_speed = 10.0
 
 [scroll]
 animation_length = 0.2
