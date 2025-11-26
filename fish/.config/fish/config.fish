@@ -21,8 +21,8 @@ alias ls4="eza --tree --level=4 --icons"
 alias lso="eza --oneline"
 alias claude="npx @anthropic-ai/claude-code"
 alias gg="lazygit"
-alias nv="neovide ."
-alias nm="nvim ."
+alias nd="neovide ."
+alias nv="nvim ."
 
 # FUNCTIONS
 # git worktree add helper -> always inside .worktree

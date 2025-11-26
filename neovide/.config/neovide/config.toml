@@ -4,9 +4,25 @@ idle = true
 maximized = true
 vsync = true
 tabs = true
+refresh_rate = 60
+refresh_rate_idle = 5
+
+# macOS specific
+macos_option_is_meta = "both"
 
 [font]
 normal = [{ family = "FiraCode Nerd Font Mono", style = "SemBd" }]
 size = 14.0
 hinting = "slight"
 edging = "subpixelantialias"
+
+[cursor]
+antialiasing = true
+animation_length = 0.06
+trail_size = 0.3
+animate_in_insert_mode = true
+animate_command_line = true
+
+[scroll]
+animation_length = 0.2
+animation_far_lines = 1
