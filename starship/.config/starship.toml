@@ -1,3 +1,8 @@
+# Faster command timeout for snappier prompts
+command_timeout = 300
+scan_timeout = 30
+
+# Prompt format
 format = """
 $username\
 $hostname\
@@ -10,10 +15,16 @@ $line_break\
 $os $character"""
 
 right_format = """
-$python
-$docker_context
+$python\
+$nodejs\
+$rust\
+$golang\
+$zig\
+$lua\
+$c\
+$cpp\
+$docker_context\
 """
-command_timeout = 500
 
 [os]
 format = "chigod($style)"
@@ -39,17 +50,27 @@ symbol = " "
 [git_status]
 format = "[[( *$conflicted$untracked$modified$staged$renamed$deleted)](218)($ahead_behind$stashed)]($style)"
 style = "green"
-conflicted = "❌"
-untracked = "🌱"
-modified = "✔"
+conflicted = "="
+untracked = "?"
+modified = "!"
 staged = "+"
-renamed = "𝌡"
-deleted = "X"
-stashed = "≡"
+renamed = "»"
+deleted = "✘"
+stashed = "$"
+ahead = "⇡"
+behind = "⇣"
+diverged = "⇕"
 
 [git_state]
 format = '\([$state( $progress_current/$progress_total)]($style)\) '
 style = "bright-black"
+rebase = "⟳"
+merge = ""
+revert = "⎌"
+cherry_pick = ""
+bisect = ""
+am = "✉"
+am_or_rebase = "✉⟳"
 
 [cmd_duration]
 format = "[$duration]($style) "
@@ -65,4 +86,55 @@ detect_files = ["requirements.txt", "pyproject.toml", ".python-version", "Pipfil
 
 [docker_context]
 format = ' [${symbol}${context}]($style)'
-symbol = '🐳'
+symbol = '🐳 '
+only_with_files = true
+
+[nodejs]
+format = '[${symbol}${version}]($style) '
+symbol = ' '
+style = "green"
+detect_extensions = ["js", "mjs", "cjs", "ts"]
+detect_files = ["package.json", ".node-version"]
+detect_folders = ["node_modules"]
+
+[rust]
+format = '[${symbol}${version}]($style) '
+symbol = ' '
+style = "red"
+detect_extensions = ["rs"]
+detect_files = ["Cargo.toml"]
+
+[golang]
+format = '[${symbol}${version}]($style) '
+symbol = ' '
+style = "cyan"
+detect_extensions = ["go"]
+detect_files = ["go.mod", "go.sum"]
+
+[zig]
+format = '[${symbol}${version}]($style) '
+symbol = ' '
+style = "yellow"
+detect_extensions = ["zig"]
+detect_files = ["build.zig"]
+
+[lua]
+format = '[${symbol}${version}]($style) '
+symbol = ' '
+style = "blue"
+detect_extensions = ["lua"]
+detect_files = [".lua-version", ".luacheckrc", ".luarc.json"]
+
+[c]
+format = '[${symbol}${version}]($style) '
+symbol = ' '
+style = "blue"
+detect_extensions = ["c", "h"]
+detect_files = ["Makefile"]
+
+[cpp]
+format = '[${symbol}${version}]($style) '
+symbol = ' '
+style = "blue"
+detect_extensions = ["cpp", "cc", "cxx", "hpp", "hh", "hxx"]
+detect_files = ["CMakeLists.txt", "meson.build"]
