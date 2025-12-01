@@ -1,11 +1,8 @@
 fork = true
 frame = "none"
 idle = true
-maximized = true
 vsync = true
 tabs = true
-refresh_rate = 60
-refresh_rate_idle = 5
 
 # macOS specific
 macos_option_is_meta = "both"
