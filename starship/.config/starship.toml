@@ -56,10 +56,10 @@ modified = "!"
 staged = "+"
 renamed = "»"
 deleted = "✘"
-stashed = "$"
-ahead = "⇡"
-behind = "⇣"
-diverged = "⇕"
+stashed = "≡"
+ahead = "↑"
+behind = "↓"
+diverged = "↕"
 
 [git_state]
 format = '\([$state( $progress_current/$progress_total)]($style)\) '
@@ -69,8 +69,7 @@ merge = ""
 revert = "⎌"
 cherry_pick = ""
 bisect = ""
-am = "✉"
-am_or_rebase = "✉⟳"
+am_or_rebase = "⟳"
 
 [cmd_duration]
 format = "[$duration]($style) "
