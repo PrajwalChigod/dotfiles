@@ -8,7 +8,6 @@ $username\
 $hostname\
 $directory\
 $git_branch\
-$git_state\
 $git_status\
 $cmd_duration\
 $line_break\
@@ -34,7 +33,7 @@ disabled = false
 
 [directory]
 truncation_length = 2
-truncation_symbol = " "
+truncation_symbol = ""
 style = "blue"
 
 [character]
@@ -48,37 +47,27 @@ style = "red"
 symbol = " "
 
 [git_status]
-format = "[[( *$conflicted$untracked$modified$staged$renamed$deleted)](218)($ahead_behind$stashed)]($style)"
+format = "[[($conflicted$untracked$modified$staged$renamed$deleted)](218)($ahead_behind$stashed)]($style)"
 style = "green"
-conflicted = "="
-untracked = "?"
-modified = "!"
-staged = "+"
-renamed = "»"
-deleted = "✘"
-stashed = "$"
-ahead = "⇡"
-behind = "⇣"
-diverged = "⇕"
-
-[git_state]
-format = '\([$state( $progress_current/$progress_total)]($style)\) '
-style = "bright-black"
-rebase = "⟳"
-merge = ""
-revert = "⎌"
-cherry_pick = ""
-bisect = ""
-am = "✉"
-am_or_rebase = "✉⟳"
+conflicted = " ⚠ "
+untracked = " ✚ "
+modified = " ✎ "
+staged = " ✔ "
+renamed = " ⇄ "
+deleted = " ✘ "
+stashed = " * "
+ahead = " ↑ "
+behind = " ↓ "
+diverged = " ↕ "
 
 [cmd_duration]
 format = "[$duration]($style) "
 style = "yellow"
 
 [python]
-format = '[${symbol}${version}(\($virtualenv\))]($style)'
-symbol = " "
+format = '[${symbol}(${version})(\($virtualenv\))]($style)'
+version_format = "(v$major)"
+symbol = " "
 style = "bright-green"
 pyenv_version_name = false
 detect_extensions = ["py"]
@@ -86,55 +75,62 @@ detect_files = ["requirements.txt", "pyproject.toml", ".python-version", "Pipfil
 
 [docker_context]
 format = ' [${symbol}${context}]($style)'
-symbol = '🐳 '
+symbol = ''
 only_with_files = true
 
 [nodejs]
-format = '[${symbol}${version}]($style) '
-symbol = ' '
+format = '[${symbol}(${version})]($style) '
+version_format = "(v$major)"
+symbol = ' '
 style = "green"
 detect_extensions = ["js", "mjs", "cjs", "ts"]
 detect_files = ["package.json", ".node-version"]
 detect_folders = ["node_modules"]
 
 [rust]
-format = '[${symbol}${version}]($style) '
-symbol = ' '
+format = '[${symbol}(${version})]($style) '
+version_format = "(v$major)"
+symbol = ' '
 style = "red"
 detect_extensions = ["rs"]
 detect_files = ["Cargo.toml"]
 
 [golang]
-format = '[${symbol}${version}]($style) '
-symbol = ' '
+format = '[${symbol}(${version})]($style) '
+version_format = "(v$major)"
+symbol = ' '
 style = "cyan"
 detect_extensions = ["go"]
 detect_files = ["go.mod", "go.sum"]
 
 [zig]
-format = '[${symbol}${version}]($style) '
-symbol = ' '
+format = '[${symbol}(${version})]($style) '
+version_format = "(v$major)"
+symbol = ' '
 style = "yellow"
 detect_extensions = ["zig"]
 detect_files = ["build.zig"]
 
 [lua]
-format = '[${symbol}${version}]($style) '
-symbol = ' '
+format = '[${symbol}(${version})]($style) '
+version_format = "(v$major)"
+symbol = ' '
 style = "blue"
 detect_extensions = ["lua"]
 detect_files = [".lua-version", ".luacheckrc", ".luarc.json"]
 
 [c]
-format = '[${symbol}${version}]($style) '
-symbol = ' '
+format = '[${symbol}(${version})]($style) '
+version_format = "(v$major)"
+symbol = ' '
 style = "blue"
 detect_extensions = ["c", "h"]
 detect_files = ["Makefile"]
 
 [cpp]
-format = '[${symbol}${version}]($style) '
-symbol = ' '
+format = '[${symbol}(${version})]($style) '
+version_format = "(v$major)"
+symbol = ' '
 style = "blue"
 detect_extensions = ["cpp", "cc", "cxx", "hpp", "hh", "hxx"]
 detect_files = ["CMakeLists.txt", "meson.build"]
