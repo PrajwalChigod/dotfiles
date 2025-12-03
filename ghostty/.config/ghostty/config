@@ -1,9 +1,22 @@
 theme = Catppuccin Mocha
-font-family = "FiraCode Nerd Font Mono SemBd"
-font-size = 14
+font-family = "JetBrainsMono NFM"
+font-size = 15
 background = "#000000"
 copy-on-select = true
-shell-integration = detect
 macos-option-as-alt = true
 keybind = shift+enter=text:\n
+
+# Better text rendering
+font-thicken = true
+adjust-cell-width = 0
+adjust-cell-height = 0
+
+# Cursor settings
+cursor-style = block
+cursor-style-blink = true
+cursor-opacity = 1
+
+# Shell integration enhancements
+shell-integration = detect
+shell-integration-features = cursor,sudo,title
 
