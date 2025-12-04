@@ -13,18 +13,6 @@ $cmd_duration\
 $line_break\
 $os $character"""
 
-right_format = """
-$python\
-$nodejs\
-$rust\
-$golang\
-$zig\
-$lua\
-$c\
-$cpp\
-$docker_context\
-"""
-
 [os]
 format = "chigod($style)"
 style = "white"
@@ -42,95 +30,24 @@ error_symbol = "[❯](red)"
 vimcmd_symbol = "[❮](green)"
 
 [git_branch]
-format = "on [$symbol$branch]($style)"
+format = "on [$symbol$branch ]($style)"
 style = "red"
 symbol = " "
 
 [git_status]
 format = "[[($conflicted$untracked$modified$staged$renamed$deleted)](218)($ahead_behind$stashed)]($style)"
 style = "green"
-conflicted = " ⚠ "
-untracked = " ✚ "
-modified = " ✎ "
-staged = " ✔ "
-renamed = " ⇄ "
-deleted = " ✘ "
-stashed = " * "
-ahead = " ↑ "
-behind = " ↓ "
-diverged = " ↕ "
+conflicted = "⚠ "
+untracked = "✚ "
+modified = "✎ "
+staged = "+ "
+renamed = "⇄ "
+deleted = "✘ "
+stashed = "≡ "
+ahead = "↑ "
+behind = "↓ "
+diverged = "⇅ "
 
 [cmd_duration]
 format = "[$duration]($style) "
 style = "yellow"
-
-[python]
-format = '[${symbol}(${version})(\($virtualenv\))]($style)'
-version_format = "(v$major)"
-symbol = " "
-style = "bright-green"
-pyenv_version_name = false
-detect_extensions = ["py"]
-detect_files = ["requirements.txt", "pyproject.toml", ".python-version", "Pipfile", "setup.py"]
-
-[docker_context]
-format = ' [${symbol}${context}]($style)'
-symbol = ''
-only_with_files = true
-
-[nodejs]
-format = '[${symbol}(${version})]($style) '
-version_format = "(v$major)"
-symbol = ' '
-style = "green"
-detect_extensions = ["js", "mjs", "cjs", "ts"]
-detect_files = ["package.json", ".node-version"]
-detect_folders = ["node_modules"]
-
-[rust]
-format = '[${symbol}(${version})]($style) '
-version_format = "(v$major)"
-symbol = ' '
-style = "red"
-detect_extensions = ["rs"]
-detect_files = ["Cargo.toml"]
-
-[golang]
-format = '[${symbol}(${version})]($style) '
-version_format = "(v$major)"
-symbol = ' '
-style = "cyan"
-detect_extensions = ["go"]
-detect_files = ["go.mod", "go.sum"]
-
-[zig]
-format = '[${symbol}(${version})]($style) '
-version_format = "(v$major)"
-symbol = ' '
-style = "yellow"
-detect_extensions = ["zig"]
-detect_files = ["build.zig"]
-
-[lua]
-format = '[${symbol}(${version})]($style) '
-version_format = "(v$major)"
-symbol = ' '
-style = "blue"
-detect_extensions = ["lua"]
-detect_files = [".lua-version", ".luacheckrc", ".luarc.json"]
-
-[c]
-format = '[${symbol}(${version})]($style) '
-version_format = "(v$major)"
-symbol = ' '
-style = "blue"
-detect_extensions = ["c", "h"]
-detect_files = ["Makefile"]
-
-[cpp]
-format = '[${symbol}(${version})]($style) '
-version_format = "(v$major)"
-symbol = ' '
-style = "blue"
-detect_extensions = ["cpp", "cc", "cxx", "hpp", "hh", "hxx"]
-detect_files = ["CMakeLists.txt", "meson.build"]
