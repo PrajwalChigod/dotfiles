@@ -42,23 +42,23 @@ error_symbol = "[❯](red)"
 vimcmd_symbol = "[❮](green)"
 
 [git_branch]
-format = "on [$symbol$branch]($style)"
+format = "on [$symbol$branch ]($style)"
 style = "red"
 symbol = " "
 
 [git_status]
 format = "[[($conflicted$untracked$modified$staged$renamed$deleted)](218)($ahead_behind$stashed)]($style)"
 style = "green"
-conflicted = " ⚠ "
-untracked = " ✚ "
-modified = " ✎ "
-staged = " ✔ "
-renamed = " ⇄ "
-deleted = " ✘ "
-stashed = " * "
-ahead = " ↑ "
-behind = " ↓ "
-diverged = " ↕ "
+conflicted = "⚠ "
+untracked = "✚ "
+modified = "✎ "
+staged = "+ "
+renamed = "⇄ "
+deleted = "✘ "
+stashed = "≡ "
+ahead = "↑ "
+behind = "↓ "
+diverged = "⇅ "
 
 [cmd_duration]
 format = "[$duration]($style) "
@@ -67,7 +67,7 @@ style = "yellow"
 [python]
 format = '[${symbol}(${version})(\($virtualenv\))]($style)'
 version_format = "(v$major)"
-symbol = " "
+symbol = " "
 style = "bright-green"
 pyenv_version_name = false
 detect_extensions = ["py"]
@@ -75,13 +75,13 @@ detect_files = ["requirements.txt", "pyproject.toml", ".python-version", "Pipfil
 
 [docker_context]
 format = ' [${symbol}${context}]($style)'
-symbol = ''
+symbol = '󰡨 '
 only_with_files = true
 
 [nodejs]
 format = '[${symbol}(${version})]($style) '
 version_format = "(v$major)"
-symbol = ' '
+symbol = '󰎙 '
 style = "green"
 detect_extensions = ["js", "mjs", "cjs", "ts"]
 detect_files = ["package.json", ".node-version"]
@@ -90,7 +90,7 @@ detect_folders = ["node_modules"]
 [rust]
 format = '[${symbol}(${version})]($style) '
 version_format = "(v$major)"
-symbol = ' '
+symbol = '󱘗 '
 style = "red"
 detect_extensions = ["rs"]
 detect_files = ["Cargo.toml"]
