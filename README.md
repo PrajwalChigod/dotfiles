@@ -113,7 +113,6 @@ fisher install PatrickF1/fzf.fish
 fisher install jethrokuan/z
 fisher install jorgebucaran/autopair.fish
 fisher install franciscolourenco/done
-fisher install nickeb96/puffer-fish
 fisher install PatrickF1/colored_man_pages.fish
 fisher install jhillyerd/plugin-git
 
