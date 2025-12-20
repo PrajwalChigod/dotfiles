@@ -13,45 +13,45 @@ pyenv init - | source
 # STARSHIP PROMPT
 starship init fish | source
 
-# ABBREVIATIONS
-abbr -a ls "eza --tree --level=1 --icons"
-abbr -a ls2 "eza --tree --level=2 --icons"
-abbr -a ls3 "eza --tree --level=3 --icons"
-abbr -a ls4 "eza --tree --level=4 --icons"
-abbr -a lso "eza --oneline"
-abbr -a claude "npx @anthropic-ai/claude-code"
-abbr -a gg "lazygit"
-abbr -a nd "neovide ."
-abbr -a nv "nvim ."
+# ALIASES
+alias ls="eza --tree --level=1 --icons"
+alias ls2="eza --tree --level=2 --icons"
+alias ls3="eza --tree --level=3 --icons"
+alias ls4="eza --tree --level=4 --icons"
+alias lso="eza --oneline"
+alias claude="npx @anthropic-ai/claude-code"
+alias gg="lazygit"
+alias nd="neovide ."
+alias nv="nvim ."
 
-# GIT ABBREVIATIONS
-abbr -a gst "git status"
-abbr -a gco "git checkout"
-abbr -a gcm "git commit -m"
-abbr -a gp "git push"
-abbr -a gl "git pull"
-abbr -a gd "git diff"
-abbr -a ga "git add"
-abbr -a gaa "git add --all"
-abbr -a gcb "git checkout -b"
-abbr -a glog "git log --oneline --graph --decorate"
+# GIT ALIASES
+alias gst="git status"
+alias gco="git checkout"
+alias gcm="git commit -m"
+alias gp="git push"
+alias gl="git pull"
+alias gd="git diff"
+alias ga="git add"
+alias gaa="git add --all"
+alias gcb="git checkout -b"
+alias glog="git log --oneline --graph --decorate"
 
 # BAT INTEGRATION
 if command -v bat &> /dev/null
     set -gx BAT_THEME "Catppuccin"
-    abbr -a cat "bat"
+    alias cat="bat"
 end
 
 # DOCKER & KUBERNETES SHORTCUTS
-abbr -a d "docker"
-abbr -a dc "docker compose"
-abbr -a dps "docker ps"
-abbr -a dex "docker exec -it"
-abbr -a k "kubectl"
-abbr -a kgp "kubectl get pods"
-abbr -a kgs "kubectl get services"
-abbr -a kgd "kubectl get deployments"
-abbr -a kdp "kubectl describe pod"
+alias d="docker"
+alias dc="docker compose"
+alias dps="docker ps"
+alias dex="docker exec -it"
+alias k="kubectl"
+alias kgp="kubectl get pods"
+alias kgs="kubectl get services"
+alias kgd="kubectl get deployments"
+alias kdp="kubectl describe pod"
 
 # FUNCTIONS
 # git worktree add helper -> creates worktree in parent directory structure
@@ -473,3 +473,12 @@ end
 
 # Dont forget to refresh this config once you make edits
 # Use this command to refresh: source ~/.config/fish/config.fish
+
+
+# BEGIN opam configuration
+# This is useful if you're using opam as it adds:
+#   - the correct directories to the PATH
+#   - auto-completion for the opam binary
+# This section can be safely removed at any time if needed.
+test -r '/Users/prajwalchigod/.opam/opam-init/init.fish' && source '/Users/prajwalchigod/.opam/opam-init/init.fish' > /dev/null 2> /dev/null; or true
+# END opam configuration
