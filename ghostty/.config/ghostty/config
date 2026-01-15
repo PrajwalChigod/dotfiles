@@ -1,10 +1,12 @@
 theme = Catppuccin Mocha
-font-family = "JetBrainsMono NFM"
+font-family = "JetBrainsMono NFM Bold"
 font-size = 15
-background = "#000000"
+background = "1B1A18"
 copy-on-select = true
+# keybind = shift+enter=text:\n
+
+# macos specific settings
 macos-option-as-alt = true
-keybind = shift+enter=text:\n
 
 # Better text rendering
 font-thicken = true
@@ -16,7 +18,5 @@ cursor-style = block
 cursor-style-blink = true
 cursor-opacity = 1
 
-# Shell integration enhancements
-shell-integration = detect
-shell-integration-features = cursor,sudo,title
+
 

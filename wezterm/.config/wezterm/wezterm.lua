@@ -12,7 +12,7 @@ local catppuccin = {
 }
 
 config.color_scheme = "Catppuccin Mocha (Gogh)"
-config.font = wezterm.font("Monaspace Argon ExtraBold")
+config.font = wezterm.font("JetBrainsMono Nerd Font Mono")
 config.font_size = 15
 config.window_decorations = "RESIZE"
 config.enable_tab_bar = true
