@@ -8,8 +8,8 @@ tabs = true
 macos_option_is_meta = "both"
 
 [font]
-normal = [{ family = "FiraCode Nerd Font Mono", style = "SemBd" }]
-size = 14.0
+normal = [{ family = "IoskeleyMono Nerd Font", style = "Regular" }]
+size = 15.0
 hinting = "slight"
 edging = "subpixelantialias"
 

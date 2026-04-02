@@ -1,5 +1,6 @@
 theme = Catppuccin Mocha
-font-family = "JetBrainsMono NFM Bold"
+font-family = "IoskeleyMono Nerd Font"
+font-style = Regular
 font-size = 15
 background = "1B1A18"
 copy-on-select = true
@@ -17,6 +18,5 @@ adjust-cell-height = 0
 cursor-style = block
 cursor-style-blink = true
 cursor-opacity = 1
-
 
 
