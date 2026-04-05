@@ -18,3 +18,12 @@ adjust-cell-height = 0
 cursor-style = block
 cursor-style-blink = true
 cursor-opacity = 1
+
+# Cursor Shaders - Neovide-style animations
+# From: https://github.com/KroneCorylus/ghostty-shader-playground
+# Restart Ghostty after changing.
+
+custom-shader = shaders/cursor_smear.glsl
+# custom-shader = shaders/cursor_smear_fade.glsl
+
+# To disable shaders: comment out all custom-shader lines
