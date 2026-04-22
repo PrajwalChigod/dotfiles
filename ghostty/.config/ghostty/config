@@ -27,3 +27,6 @@ custom-shader = shaders/cursor_smear.glsl
 # custom-shader = shaders/cursor_smear_fade.glsl
 
 # To disable shaders: comment out all custom-shader lines
+
+# Window visibility
+keybind = global:cmd+shift+t=toggle_quick_terminal
