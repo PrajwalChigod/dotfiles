@@ -23,6 +23,7 @@ alias claude="npx @anthropic-ai/claude-code"
 alias gg="lazygit"
 alias nd="neovide ."
 alias nv="nvim ."
+alias znv="cd ~/.config/nvim"
 
 # GIT ALIASES
 alias gst="git status"
@@ -59,10 +60,10 @@ function gwa
     set new_branch $argv[1]
     set base_branch $argv[2]
 
-    # Get parent directory and project name for new worktree structure
-    set parent_dir (dirname (pwd))
-    set project_name (basename (pwd))
-    set worktree_path "$parent_dir/worktree/$project_name/$new_branch"
+    set main_worktree (git worktree list 2>/dev/null | head -1 | awk '{print $1}')
+    set main_parent (dirname "$main_worktree")
+    set project_name (basename "$main_worktree")
+    set worktree_path "$main_parent/worktree/$project_name/$new_branch"
 
     # Auto-detect base branch if not provided
     if test -z "$base_branch"
@@ -78,10 +79,8 @@ function gwa
         set base_branch "origin/$base_branch"
     end
 
-    # Ensure worktree parent directory exists
-    mkdir -p "$parent_dir/worktree/$project_name"
+    mkdir -p "$main_parent/worktree/$project_name"
 
-    # Print command being run
     set_color cyan
     echo "Running: git worktree add \"$worktree_path\" -b \"$new_branch\" \"$base_branch\""
     set_color normal
@@ -93,10 +92,39 @@ end
 function gwc
     set branch $argv[1]
 
-    # Get parent directory and project name for new worktree structure
-    set parent_dir (dirname (pwd))
-    set project_name (basename (pwd))
-    set worktree_path "$parent_dir/worktree/$project_name/$branch"
+    if test -z "$branch"
+        set_color red
+        echo "Error: Please specify a branch name"
+        echo "Usage: gwc <branch> | gwc main"
+        set_color normal
+        return 1
+    end
+
+    # Always resolve paths relative to the main worktree, works from anywhere
+    set main_worktree (git worktree list 2>/dev/null | head -1 | awk '{print $1}')
+
+    if test -z "$main_worktree"
+        set_color red
+        echo "Error: Not inside a git repository"
+        set_color normal
+        return 1
+    end
+
+    # Detect base branch name (main/master/etc)
+    set base_branch (git rev-parse --abbrev-ref origin/HEAD 2>/dev/null | string replace 'origin/' '')
+
+    # Switch to main worktree when targeting main/master/base branch
+    if test "$branch" = "main" -o "$branch" = "master" -o "$branch" = "$base_branch"
+        set_color cyan
+        echo "Switching to main worktree: $main_worktree"
+        set_color normal
+        cd "$main_worktree"
+        return 0
+    end
+
+    set main_parent (dirname "$main_worktree")
+    set project_name (basename "$main_worktree")
+    set worktree_path "$main_parent/worktree/$project_name/$branch"
 
     if not test -d "$worktree_path"
         set_color red
@@ -105,7 +133,6 @@ function gwc
         return 1
     end
 
-    # Print command being run
     set_color cyan
     echo "Changing to worktree: $worktree_path"
     set_color normal
@@ -233,10 +260,10 @@ function gwe
         return 1
     end
 
-    # Get parent directory and project name for worktree structure
-    set parent_dir (dirname (pwd))
-    set project_name (basename (pwd))
-    set worktree_path "$parent_dir/worktree/$project_name/$branch"
+    set main_worktree (git worktree list 2>/dev/null | head -1 | awk '{print $1}')
+    set main_parent (dirname "$main_worktree")
+    set project_name (basename "$main_worktree")
+    set worktree_path "$main_parent/worktree/$project_name/$branch"
 
     if not test -d "$worktree_path"
         set_color red
@@ -264,10 +291,10 @@ function gwg
         return 1
     end
 
-    # Get parent directory and project name for worktree structure
-    set parent_dir (dirname (pwd))
-    set project_name (basename (pwd))
-    set worktree_path "$parent_dir/worktree/$project_name/$branch"
+    set main_worktree (git worktree list 2>/dev/null | head -1 | awk '{print $1}')
+    set main_parent (dirname "$main_worktree")
+    set project_name (basename "$main_worktree")
+    set worktree_path "$main_parent/worktree/$project_name/$branch"
 
     if not test -d "$worktree_path"
         set_color red
@@ -295,10 +322,10 @@ function gwr
         return 1
     end
 
-    # Get parent directory and project name for new worktree structure
-    set parent_dir (dirname (pwd))
-    set project_name (basename (pwd))
-    set worktree_path "$parent_dir/worktree/$project_name/$branch"
+    set main_worktree (git worktree list 2>/dev/null | head -1 | awk '{print $1}')
+    set main_parent (dirname "$main_worktree")
+    set project_name (basename "$main_worktree")
+    set worktree_path "$main_parent/worktree/$project_name/$branch"
 
     if not test -d "$worktree_path"
         set_color red
@@ -371,10 +398,10 @@ function gwclean
     set_color normal
     echo ""
 
-    # Get parent directory and project name
-    set parent_dir (dirname (pwd))
-    set project_name (basename (pwd))
-    set worktree_base "$parent_dir/worktree/$project_name"
+    set main_worktree (git worktree list 2>/dev/null | head -1 | awk '{print $1}')
+    set main_parent (dirname "$main_worktree")
+    set project_name (basename "$main_worktree")
+    set worktree_base "$main_parent/worktree/$project_name"
 
     # Check if worktree directory exists
     if not test -d "$worktree_base"
@@ -482,3 +509,4 @@ end
 # This section can be safely removed at any time if needed.
 test -r '/Users/prajwalchigod/.opam/opam-init/init.fish' && source '/Users/prajwalchigod/.opam/opam-init/init.fish' > /dev/null 2> /dev/null; or true
 # END opam configuration
+export PATH="$HOME/.local/bin:$PATH"
