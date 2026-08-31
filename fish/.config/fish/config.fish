@@ -39,8 +39,10 @@ alias glog="git log --oneline --graph --decorate"
 
 # BAT INTEGRATION
 if command -v bat &> /dev/null
-    set -gx BAT_THEME "Catppuccin"
+    set -gx BAT_THEME "Catppuccin Mocha"
     alias cat="bat"
+    set -gx MANPAGER "sh -c 'col -bx | bat -l man -p'"
+    set -gx MANROFFOPT "-c"
 end
 
 # DOCKER & KUBERNETES SHORTCUTS
@@ -55,19 +57,62 @@ alias kgd="kubectl get deployments"
 alias kdp="kubectl describe pod"
 
 # FUNCTIONS
+# Internal: resolve the main worktree path (first entry in `git worktree list`)
+function _gw_main_worktree
+    git worktree list 2>/dev/null | head -1 | awk '{print $1}'
+end
+
+# Internal: resolve the base directory that holds all worktrees for this project
+function _gw_worktree_base
+    set main_worktree (_gw_main_worktree)
+    set main_parent (dirname "$main_worktree")
+    set project_name (basename "$main_worktree")
+    echo "$main_parent/worktree/$project_name"
+end
+
+# Internal: resolve the standard worktree path for a given branch name
+function _gw_worktree_path
+    set branch $argv[1]
+    echo (_gw_worktree_base)"/$branch"
+end
+
+# Internal: detect the repo's base branch (main/master/etc) via origin/HEAD
+function _gw_base_branch
+    git rev-parse --abbrev-ref origin/HEAD 2>/dev/null | string replace 'origin/' ''
+end
+
 # git worktree add helper -> creates worktree in parent directory structure
 function gwa
+    argparse 'n/name=' 'b/base=' -- $argv
+    or return 1
+
     set new_branch $argv[1]
     set base_branch $argv[2]
 
-    set main_worktree (git worktree list 2>/dev/null | head -1 | awk '{print $1}')
-    set main_parent (dirname "$main_worktree")
-    set project_name (basename "$main_worktree")
-    set worktree_path "$main_parent/worktree/$project_name/$new_branch"
+    if test -z "$new_branch"
+        set_color red
+        echo "Error: Please specify a branch name"
+        echo "Usage: gwa <branch> [base_branch] [-n|--name <worktree_name>] [-b|--base <base_branch>]"
+        set_color normal
+        return 1
+    end
+
+    # -b/--base overrides the positional base_branch, if both are given
+    if set -q _flag_base
+        set base_branch $_flag_base
+    end
+
+    # Worktree directory name defaults to the branch name; -n/--name overrides it
+    set worktree_name $new_branch
+    if set -q _flag_name
+        set worktree_name $_flag_name
+    end
+
+    set worktree_path (_gw_worktree_path "$worktree_name")
 
     # Auto-detect base branch if not provided
     if test -z "$base_branch"
-        set base_branch (git rev-parse --abbrev-ref origin/HEAD 2>/dev/null | string replace 'origin/' '')
+        set base_branch (_gw_base_branch)
 
         if test -z "$base_branch"
             set_color red
@@ -79,10 +124,14 @@ function gwa
         set base_branch "origin/$base_branch"
     end
 
-    mkdir -p "$main_parent/worktree/$project_name"
+    mkdir -p (_gw_worktree_base)
 
     set_color cyan
-    echo "Running: git worktree add \"$worktree_path\" -b \"$new_branch\" \"$base_branch\""
+    if test "$worktree_name" != "$new_branch"
+        echo "Running: git worktree add \"$worktree_path\" -b \"$new_branch\" \"$base_branch\" (worktree name: $worktree_name)"
+    else
+        echo "Running: git worktree add \"$worktree_path\" -b \"$new_branch\" \"$base_branch\""
+    end
     set_color normal
 
     git worktree add "$worktree_path" -b "$new_branch" "$base_branch"
@@ -101,7 +150,7 @@ function gwc
     end
 
     # Always resolve paths relative to the main worktree, works from anywhere
-    set main_worktree (git worktree list 2>/dev/null | head -1 | awk '{print $1}')
+    set main_worktree (_gw_main_worktree)
 
     if test -z "$main_worktree"
         set_color red
@@ -111,7 +160,7 @@ function gwc
     end
 
     # Detect base branch name (main/master/etc)
-    set base_branch (git rev-parse --abbrev-ref origin/HEAD 2>/dev/null | string replace 'origin/' '')
+    set base_branch (_gw_base_branch)
 
     # Switch to main worktree when targeting main/master/base branch
     if test "$branch" = "main" -o "$branch" = "master" -o "$branch" = "$base_branch"
@@ -122,9 +171,7 @@ function gwc
         return 0
     end
 
-    set main_parent (dirname "$main_worktree")
-    set project_name (basename "$main_worktree")
-    set worktree_path "$main_parent/worktree/$project_name/$branch"
+    set worktree_path (_gw_worktree_path "$branch")
 
     if not test -d "$worktree_path"
         set_color red
@@ -260,10 +307,7 @@ function gwe
         return 1
     end
 
-    set main_worktree (git worktree list 2>/dev/null | head -1 | awk '{print $1}')
-    set main_parent (dirname "$main_worktree")
-    set project_name (basename "$main_worktree")
-    set worktree_path "$main_parent/worktree/$project_name/$branch"
+    set worktree_path (_gw_worktree_path "$branch")
 
     if not test -d "$worktree_path"
         set_color red
@@ -291,10 +335,7 @@ function gwg
         return 1
     end
 
-    set main_worktree (git worktree list 2>/dev/null | head -1 | awk '{print $1}')
-    set main_parent (dirname "$main_worktree")
-    set project_name (basename "$main_worktree")
-    set worktree_path "$main_parent/worktree/$project_name/$branch"
+    set worktree_path (_gw_worktree_path "$branch")
 
     if not test -d "$worktree_path"
         set_color red
@@ -322,10 +363,7 @@ function gwr
         return 1
     end
 
-    set main_worktree (git worktree list 2>/dev/null | head -1 | awk '{print $1}')
-    set main_parent (dirname "$main_worktree")
-    set project_name (basename "$main_worktree")
-    set worktree_path "$main_parent/worktree/$project_name/$branch"
+    set worktree_path (_gw_worktree_path "$branch")
 
     if not test -d "$worktree_path"
         set_color red
@@ -385,7 +423,7 @@ end
 # git worktree cleanup - batch remove merged worktrees
 function gwclean
     # Get the default base branch
-    set base_branch (git rev-parse --abbrev-ref origin/HEAD 2>/dev/null | string replace 'origin/' '')
+    set base_branch (_gw_base_branch)
     if test -z "$base_branch"
         set_color red
         echo "Error: Could not determine base branch"
@@ -398,10 +436,7 @@ function gwclean
     set_color normal
     echo ""
 
-    set main_worktree (git worktree list 2>/dev/null | head -1 | awk '{print $1}')
-    set main_parent (dirname "$main_worktree")
-    set project_name (basename "$main_worktree")
-    set worktree_base "$main_parent/worktree/$project_name"
+    set worktree_base (_gw_worktree_base)
 
     # Check if worktree directory exists
     if not test -d "$worktree_base"
