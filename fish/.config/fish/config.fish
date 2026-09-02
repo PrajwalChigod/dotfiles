@@ -81,6 +81,21 @@ function _gw_base_branch
     git rev-parse --abbrev-ref origin/HEAD 2>/dev/null | string replace 'origin/' ''
 end
 
+# Internal: find the worktree path where a branch is currently checked out, if any
+function _gw_find_branch_worktree
+    set branch $argv[1]
+    set cur_wt ""
+    for line in (git worktree list --porcelain)
+        switch $line
+            case 'worktree *'
+                set cur_wt (string sub -s 10 $line)
+            case "branch refs/heads/$branch"
+                echo $cur_wt
+                return 0
+        end
+    end
+end
+
 # git worktree add helper -> creates worktree in parent directory structure
 function gwa
     argparse 'n/name=' 'b/base=' -- $argv
@@ -110,6 +125,41 @@ function gwa
 
     set worktree_path (_gw_worktree_path "$worktree_name")
 
+    # If the branch already exists, just check it out into the new worktree
+    # instead of trying to create it (git errors on `-b` for an existing branch).
+    if git show-ref --verify --quiet "refs/heads/$new_branch"
+        # A branch can only be checked out in one worktree at a time — detect that
+        # and point at the existing worktree instead of surfacing git's raw error.
+        set existing_path (_gw_find_branch_worktree $new_branch)
+
+        if test -n "$existing_path"
+            set_color red
+            echo "Error: branch '$new_branch' is already checked out at $existing_path"
+            echo "Run: cd \"$existing_path\"  (or: gwc $new_branch, if the worktree dir matches the branch name)"
+            set_color normal
+            return 1
+        end
+
+        if test -n "$base_branch"
+            set_color yellow
+            echo "Warning: branch '$new_branch' already exists; ignoring base branch '$base_branch'"
+            set_color normal
+        end
+
+        mkdir -p (_gw_worktree_base)
+
+        set_color cyan
+        if test "$worktree_name" != "$new_branch"
+            echo "Running: git worktree add \"$worktree_path\" \"$new_branch\" (worktree name: $worktree_name)"
+        else
+            echo "Running: git worktree add \"$worktree_path\" \"$new_branch\""
+        end
+        set_color normal
+
+        git worktree add "$worktree_path" "$new_branch"
+        return $status
+    end
+
     # Auto-detect base branch if not provided
     if test -z "$base_branch"
         set base_branch (_gw_base_branch)
@@ -135,6 +185,85 @@ function gwa
     set_color normal
 
     git worktree add "$worktree_path" -b "$new_branch" "$base_branch"
+end
+
+# git worktree switch-branch -> moves an existing branch into a (new or existing) worktree
+function gws
+    argparse 'n/name=' -- $argv
+    or return 1
+
+    set branch $argv[1]
+
+    if test -z "$branch"
+        set_color red
+        echo "Error: Please specify a branch name"
+        echo "Usage: gws <branch> [-n|--name <worktree_name>]"
+        set_color normal
+        return 1
+    end
+
+    if not git show-ref --verify --quiet "refs/heads/$branch"
+        set_color red
+        echo "Error: branch '$branch' does not exist"
+        set_color normal
+        return 1
+    end
+
+    # Worktree directory name defaults to the branch name; -n/--name overrides it
+    set worktree_name $branch
+    if set -q _flag_name
+        set worktree_name $_flag_name
+    end
+
+    set target_path (_gw_worktree_path "$worktree_name")
+    set main_worktree (_gw_main_worktree)
+    set existing_path (_gw_find_branch_worktree $branch)
+
+    # Target worktree dir already exists
+    if test -d "$target_path"
+        if test "$existing_path" = "$target_path"
+            set_color cyan
+            echo "Branch '$branch' is already in worktree: $target_path"
+            set_color normal
+            cd "$target_path"
+            return 0
+        end
+
+        set_color red
+        echo "Error: worktree '$worktree_name' already exists at $target_path but has a different branch checked out"
+        echo "Run: gwr $worktree_name  (to remove it first), or choose a different -n name"
+        set_color normal
+        return 1
+    end
+
+    mkdir -p (_gw_worktree_base)
+
+    # Branch is already checked out somewhere else -> relocate that worktree
+    if test -n "$existing_path"
+        if test "$existing_path" = "$main_worktree"
+            set_color red
+            echo "Error: branch '$branch' is checked out in the main worktree ($main_worktree)"
+            echo "git can't move the main worktree. Switch it to another branch first: gwc <base_branch>"
+            set_color normal
+            return 1
+        end
+
+        set_color cyan
+        echo "Running: git worktree move \"$existing_path\" \"$target_path\""
+        set_color normal
+
+        git worktree move "$existing_path" "$target_path"
+        and cd "$target_path"
+        return $status
+    end
+
+    # Not checked out anywhere yet -> just add it
+    set_color cyan
+    echo "Running: git worktree add \"$target_path\" \"$branch\""
+    set_color normal
+
+    git worktree add "$target_path" "$branch"
+    and cd "$target_path"
 end
 
 # git worktree checkout
