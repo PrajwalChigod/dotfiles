@@ -1,7 +1,10 @@
 theme = Catppuccin Mocha
 font-family = "IoskeleyMono Nerd Font"
 font-style = Regular
-font-size = 15
+font-style-bold = Bold
+font-style-italic = Italic
+font-style-bold-italic = Bold Italic
+font-size = 14
 background = "14141E"
 copy-on-select = true
 # keybind = shift+enter=text:\n
@@ -9,12 +12,15 @@ copy-on-select = true
 # macos specific settings
 macos-option-as-alt = true
 
+# Snap window resizes to whole terminal cells so there's no leftover
+# fractional-row gap at the bottom of the window
+window-step-resize = true
+
 keybind = super+shift+f=toggle_fullscreen
 
 # Better text rendering
 font-thicken = true
-adjust-cell-width = 0
-adjust-cell-height = 0
+adjust-cell-height = 10%
 
 # Cursor settings
 cursor-style = block
