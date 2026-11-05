@@ -1,15 +1,3 @@
--- The idea is to have one modifier family per domain:
---   cmd+*        tabs and panes
---   cmd+shift+*  sessions
--- The same key means the same verb in the tab and session families:
---   n new, r rename, x close, [ ] previous/next
---   cmd+x closes the focused pane, or the tab when it is the only pane
---   cmd+d / cmd+shift+d split a pane right / down (the client's defaults);
---     the one cmd+shift+* key that isn't a session action
---   cmd+f opens a floating pane, cmd+h/j/k/l or cmd+arrows focus a pane,
---     cmd+z zooms it
---   cmd+p enters pane mode to resize and move panes
-
 -- Sessions
 rex.bind("cmd+shift+o", "session.switch")
 rex.bind("cmd+shift+n", "session.new")
@@ -17,6 +5,10 @@ rex.bind("cmd+shift+r", "session.rename")
 rex.bind("cmd+shift+x", "session.close")
 rex.bind("cmd+shift+[", "session.previous")
 rex.bind("cmd+shift+]", "session.next")
+
+-- Quick switcher views: o sessions (above), b blocks, a activity
+rex.bind("cmd+shift+b", "pane.go_to")
+rex.bind("cmd+shift+a", "pane.view_activity")
 
 -- Tabs
 rex.bind("cmd+n", "client.tab.new")
