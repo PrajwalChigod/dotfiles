@@ -54,34 +54,56 @@ rex.action({
 rex.bind("cmd+x", "close")
 
 -- Panes
--- cmd+f opens a floating shell over the current tab, in the focused pane's
--- directory; cmd+x closes it.
+-- The focused pane's working directory, or nil if it hasn't reported one.
+local function focused_cwd(ctx)
+  local ok, result = pcall(rex.call, "block.method", {
+    session_id = ctx.session_id,
+    block_id = ctx.block_id,
+    method = "pwd",
+  })
+  if ok and result and result.pwd then
+    -- pwd is a file://host/path URL
+    return (result.pwd:gsub("^file://[^/]*", ""):gsub("%%(%x%x)", function(hex)
+      return string.char(tonumber(hex, 16))
+    end))
+  end
+end
+
+-- Open a floating pane over the current tab, in the focused pane's directory.
+-- With a command, the pane runs it and closes when it exits.
+local function open_float(ctx, label, command)
+  rex.session.new_layer({
+    bounds = { 0.067, 0.067, 0.866, 0.866 },
+    focus = true,
+    layout = {
+      block = {
+        flavor = "com.superlogical.terminal.shell",
+        label = label,
+        options = { cwd = focused_cwd(ctx), command = command },
+      },
+    },
+  })
+end
+
+-- cmd+f opens a floating shell; cmd+x closes it.
 rex.action({
   name = "float",
   title = "New Floating Pane",
   run = function(ctx)
-    local cwd
-    local ok, result = pcall(rex.call, "block.method", {
-      session_id = ctx.session_id,
-      block_id = ctx.block_id,
-      method = "pwd",
-    })
-    if ok and result and result.pwd then
-      -- pwd is a file://host/path URL
-      cwd = result.pwd:gsub("^file://[^/]*", ""):gsub("%%(%x%x)", function(hex)
-        return string.char(tonumber(hex, 16))
-      end)
-    end
-    rex.session.new_layer({
-      bounds = { 0.067, 0.067, 0.866, 0.866 },
-      focus = true,
-      layout = {
-        block = { flavor = "com.superlogical.terminal.shell", label = "float", options = { cwd = cwd } },
-      },
-    })
+    open_float(ctx, "float")
   end,
 })
 rex.bind("cmd+f", "float")
+-- cmd+g opens lazygit in a floating pane; quitting lazygit (q) closes it.
+-- This replaces Rex's default cmd+g (Find Next).
+rex.action({
+  name = "lazygit",
+  title = "Lazygit",
+  run = function(ctx)
+    open_float(ctx, "lazygit", { "lazygit" })
+  end,
+})
+rex.bind("cmd+g", "lazygit")
 -- cmd+m hides the focused floating pane (it keeps running) and shows it again.
 rex.bind("cmd+m", "pane.minimize_floating")
 -- cmd+ctrl+m does the same for every floating pane in the tab.
