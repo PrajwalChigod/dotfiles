@@ -11,6 +11,7 @@ Each top-level directory is a Stow package:
 | `bat` | bat config |
 | `fish` | Fish shell config and plugin list |
 | `ghostty` | Ghostty terminal config, themes, shaders |
+| `lazygit` | lazygit config |
 | `neovide` | Neovide (Neovim GUI) config |
 | `starship` | Starship prompt config |
 | `tmux` | `~/.tmux.conf` |
@@ -116,6 +117,7 @@ stow starship
 stow wezterm
 stow aerospace
 stow neovide
+stow lazygit
 ```
 
 > Do not use `stow */` here: it would also stow any other directory in the repo that is not

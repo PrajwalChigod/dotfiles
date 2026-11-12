@@ -100,7 +100,7 @@ rex.action({
   name = "lazygit",
   title = "Lazygit",
   run = function(ctx)
-    open_float(ctx, "lazygit", { "lazygit" })
+    open_float(ctx, "lazygit", { "env", "XDG_CONFIG_HOME=" .. os.getenv("HOME") .. "/.config", "lazygit" })
   end,
 })
 rex.bind("cmd+g", "lazygit")

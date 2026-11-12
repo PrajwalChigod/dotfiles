@@ -5,6 +5,9 @@ fish_add_path /usr/local/bin
 fish_add_path ~/.npm-global/bin
 fish_add_path ~/bin
 
+# XDG: lazygit reads ~/.config/lazygit on macOS
+set -gx XDG_CONFIG_HOME "$HOME/.config"
+
 # PYENV
 set -gx PYENV_ROOT "$HOME/.pyenv"
 fish_add_path $PYENV_ROOT/bin

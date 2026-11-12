@@ -1,0 +1,73 @@
+gui:
+  nerdFontsVersion: "3"
+  showFileIcons: true
+  customIcons:
+    extensions:
+      ".py": { icon: "\ue606", color: "#f9e2af" } # yellow
+      ".pyi": { icon: "\ue606", color: "#f9e2af" }
+      ".js": { icon: "\ue60c", color: "#f9e2af" } # yellow
+      ".mjs": { icon: "\ue60c", color: "#f9e2af" }
+      ".cjs": { icon: "\ue60c", color: "#f9e2af" }
+      ".jsx": { icon: "\ue7ba", color: "#89dceb" } # sky
+      ".ts": { icon: "\ue628", color: "#89b4fa" } # blue
+      ".mts": { icon: "\ue628", color: "#89b4fa" }
+      ".cts": { icon: "\ue628", color: "#89b4fa" }
+      ".tsx": { icon: "\ue7ba", color: "#89b4fa" } # blue
+      ".dockerfile": { icon: "\uf308", color: "#89b4fa" } # blue
+      ".c": { icon: "\ue61e", color: "#89b4fa" } # blue
+      ".h": { icon: "\uf0fd", color: "#cba6f7" } # mauve
+      ".cpp": { icon: "\ue61d", color: "#74c7ec" } # sapphire
+      ".cc": { icon: "\ue61d", color: "#74c7ec" }
+      ".cxx": { icon: "\ue61d", color: "#74c7ec" }
+      ".hpp": { icon: "\uf0fd", color: "#cba6f7" } # mauve
+      ".rs": { icon: "\ue7a8", color: "#fab387" } # peach
+      ".go": { icon: "\ue627", color: "#74c7ec" } # sapphire
+      ".json": { icon: "\ue60b", color: "#f9e2af" } # yellow
+      ".jsonc": { icon: "\ue60b", color: "#f9e2af" }
+      ".yaml": { icon: "\ue6a8", color: "#f38ba8" } # red
+      ".yml": { icon: "\ue6a8", color: "#f38ba8" } # red
+      ".env": { icon: "\uf462", color: "#f9e2af" } # yellow
+    filenames:
+      "Dockerfile": { icon: "\uf308", color: "#89b4fa" } # blue
+      "Containerfile": { icon: "\uf308", color: "#89b4fa" }
+      ".dockerignore": { icon: "\uf308", color: "#585b70" } # surface2
+      "docker-compose.yml": { icon: "\uf308", color: "#89b4fa" }
+      "docker-compose.yaml": { icon: "\uf308", color: "#89b4fa" }
+      "compose.yml": { icon: "\uf308", color: "#89b4fa" }
+      "compose.yaml": { icon: "\uf308", color: "#89b4fa" }
+      "Cargo.toml": { icon: "\ue7a8", color: "#fab387" } # peach
+      "Cargo.lock": { icon: "\ue7a8", color: "#585b70" } # surface2
+      "go.mod": { icon: "\ue627", color: "#74c7ec" } # sapphire
+      "go.sum": { icon: "\ue627", color: "#585b70" } # surface2
+      ".env": { icon: "\uf462", color: "#f9e2af" } # yellow
+      ".env.local": { icon: "\uf462", color: "#f9e2af" }
+      ".env.example": { icon: "\uf462", color: "#f9e2af" }
+      ".env.development": { icon: "\uf462", color: "#f9e2af" }
+      ".env.production": { icon: "\uf462", color: "#f9e2af" }
+      ".env.test": { icon: "\uf462", color: "#f9e2af" }
+  theme:
+    activeBorderColor:
+      - "#89b4fa" # blue
+      - bold
+    inactiveBorderColor:
+      - "#585b70" # surface2 (espresso WinSeparator)
+    searchingActiveBorderColor:
+      - "#f9e2af" # yellow
+    optionsTextColor:
+      - "#89b4fa" # blue
+    selectedLineBgColor:
+      - "#313244" # surface0
+    cherryPickedCommitBgColor:
+      - "#45475a" # surface1
+    cherryPickedCommitFgColor:
+      - "#89b4fa" # blue
+    markedBaseCommitBgColor:
+      - "#45475a" # surface1
+    markedBaseCommitFgColor:
+      - "#f9e2af" # yellow
+    unstagedChangesColor:
+      - "#f38ba8" # red
+    defaultFgColor:
+      - "#cdd6f4" # text
+    authorColors:
+      "*": "#b4befe" # lavender
