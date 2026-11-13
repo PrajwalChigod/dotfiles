@@ -10,6 +10,9 @@ export PATH=/usr/local/bin:$PATH
 export PATH=~/.npm-global/bin:$PATH
 export PATH="$HOME/bin:$PATH"
 
+# XDG: lazygit reads ~/.config/lazygit on macOS
+export XDG_CONFIG_HOME="$HOME/.config"
+
 # Pyenv
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
