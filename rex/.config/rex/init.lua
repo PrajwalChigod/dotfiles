@@ -90,9 +90,9 @@ local function focused_cwd(ctx)
   end
 end
 
--- Open a floating pane over the current tab, in the focused pane's directory.
--- With a command, the pane runs it and closes when it exits.
-local function open_float(ctx, label, command)
+-- Open a floating pane over the current tab, in cwd or else the focused pane's
+-- directory. With a command, the pane runs it and closes when it exits.
+local function open_float(ctx, label, command, cwd)
   rex.session.new_layer({
     bounds = { 0.067, 0.067, 0.866, 0.866 },
     focus = true,
@@ -100,7 +100,7 @@ local function open_float(ctx, label, command)
       block = {
         flavor = "com.superlogical.terminal.shell",
         label = label,
-        options = { cwd = focused_cwd(ctx), command = command },
+        options = { cwd = cwd or focused_cwd(ctx), command = command },
       },
     },
   })
@@ -125,6 +125,39 @@ rex.action({
   end,
 })
 rex.bind("cmd+g", "lazygit")
+-- cmd+e opens a scratchpad: Neovim on ~/.config/scratch, in a floating pane.
+-- Pressing it again hides the scratchpad (it keeps running), and again shows it.
+-- Also in the command palette as "Scratchpad".
+local home = os.getenv("HOME")
+rex.action({
+  name = "scratch",
+  title = "Scratchpad",
+  keywords = "scratch notes jot nvim",
+  run = function(ctx)
+    local view = rex.session.view({})
+    for _, window in ipairs(view.windows) do
+      if window.window_id == view.active_window_id then
+        for _, layer in ipairs(window.layers) do
+          for _, block in ipairs(layer.blocks) do
+            if layer.kind ~= "tiled" and block.label == "scratch" then
+              local shown = layer.state ~= "minimized" and block.block_id == window.focused_block_id
+              rex.session.set_layer_state({
+                session_id = ctx.session_id,
+                layer_id = layer.layer_id,
+                state = shown and "minimized" or "normal",
+                focus = not shown,
+              })
+              return
+            end
+          end
+        end
+      end
+    end
+    -- The pane starts in $HOME so it can create the directory before entering it.
+    open_float(ctx, "scratch", { "sh", "-c", 'mkdir -p "$1" && cd "$1" && exec nvim .', "sh", home .. "/.config/scratch" }, home)
+  end,
+})
+rex.bind("cmd+e", "scratch")
 -- cmd+m hides the focused floating pane (it keeps running) and shows it again.
 rex.bind("cmd+m", "pane.minimize_floating")
 -- cmd+ctrl+m does the same for every floating pane in the tab.
