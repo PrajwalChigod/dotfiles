@@ -1,12 +1,12 @@
 -- Sessions
-rex.bind("cmd+shift+o", "session.switch")
+rex.bind("cmd+shift+s", "session.switch")
 rex.bind("cmd+shift+n", "session.new")
 rex.bind("cmd+shift+r", "session.rename")
 rex.bind("cmd+shift+x", "session.close")
 rex.bind("cmd+shift+[", "session.previous")
 rex.bind("cmd+shift+]", "session.next")
 
--- Quick switcher views: o sessions (above), b blocks, a activity
+-- Quick switcher views: s sessions (above), b blocks, a activity
 rex.bind("cmd+shift+b", "pane.go_to")
 rex.bind("cmd+shift+a", "pane.view_activity")
 
@@ -17,6 +17,27 @@ rex.unbind("cmd+w")
 rex.bind("cmd+r", "client.tab.rename")
 rex.bind("cmd+[", "client.tab.previous")
 rex.bind("cmd+]", "client.tab.next")
+
+-- cmd+1..8 go to that tab of the current session, and cmd+9 to its last tab.
+-- The client's own client.tab.goto counts tabs across every session.
+rex.action({
+  name = "session_tab",
+  title = "Go to Tab in Session",
+  args = { index = "integer" },
+  run = function(ctx, args)
+    local view, err = rex.session.view({})
+    if err ~= nil then error(err, 0) end
+    local i = args.index < 0 and #view.windows + 1 + args.index or args.index
+    local window = view.windows[i]
+    if window then
+      rex.client.queue("session.select", { session_id = ctx.session_id, window_id = window.window_id })
+    end
+  end,
+})
+for i = 1, 8 do
+  rex.bind("cmd+" .. i, "session_tab", { index = i })
+end
+rex.bind("cmd+9", "session_tab", { index = -1 })
 
 -- Close the focused pane, or the whole tab when it is the only pane in it.
 -- A focused floating pane always closes on its own.
